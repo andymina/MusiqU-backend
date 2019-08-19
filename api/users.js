@@ -51,10 +51,10 @@ router.post("/login", (req, res) => {
 			if (isMatch){
 				const payload = {...user._doc};
 				jwt.sign(payload, keys.SECRET_OR_KEY, { expiresIn: 604800 }, (err, token) => {
-					res.json({ success: true, token: "Bearer " + token });
+					return res.status(200).json({ success: true, token: "Bearer " + token });
 				});
 			} else {
-				res.status(400).json({ password: "Incorrect password" });
+				return res.status(400).json({ password: "Incorrect password" });
 			}
 		});
 	})
