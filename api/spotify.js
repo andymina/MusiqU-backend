@@ -87,11 +87,11 @@ router.post("/connect", (req, res) => {
 	// Generate state and store it to validate
 	// request after Spotify callback
 	const state = generateRandomString(16);
-	res.cookie(keys.SPOTIFY_STATE_KEY, state);
+	res.cookie(keys.SPOTIFY_STATE_KEY, state).send('cookie set');
    console.log("key", keys.SPOTIFY_STATE_KEY);
    console.log("val", state);
 
-   console.log("stored -> ", res.cookies[keys.SPOTIFY_STATE_KEY]);
+   console.log("stored -> ", req.cookies[keys.SPOTIFY_STATE_KEY]);
 
 	// Define necessary params and scope for the Spotify API
 	const scope = 'user-modify-playback-state user-read-playback-state playlist-modify-public playlist-modify-private';
