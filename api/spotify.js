@@ -123,6 +123,7 @@ router.post("/callback", async (req, res) => {
       let updated_user = {...user, ...tokens, ...spotify_user};
       return res.status(200).json({ updated_user });
 	} else {
+      console.log("State mismatch");
 		return res.status(500).json({ error: "State mismatch" });
 	}
 });
