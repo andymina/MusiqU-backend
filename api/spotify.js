@@ -115,6 +115,11 @@ router.post("/callback", async (req, res) => {
 
    // Reaffirm that the state passed is the
    // same as the state that was stored.
+
+   console.log(state)
+   console.log();
+   console.log(stored_state);
+   
 	if (state === stored_state){
 		res.clearCookie(keys.SPOTIFY_STATE_KEY);
 
