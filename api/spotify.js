@@ -91,6 +91,7 @@ router.post("/connect", (req, res) => {
    console.log("key", keys.SPOTIFY_STATE_KEY);
    console.log("val", state);
 
+   console.log(req);
    console.log("stored -> ", req.cookies[keys.SPOTIFY_STATE_KEY]);
 
 	// Define necessary params and scope for the Spotify API
