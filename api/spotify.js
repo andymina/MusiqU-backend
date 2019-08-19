@@ -89,6 +89,9 @@ router.post("/connect", (req, res) => {
 	const state = generateRandomString(16);
 	res.cookie(keys.SPOTIFY_STATE_KEY, state);
 
+   console.log("key", keys.SPOTIFY_STATE_KEY);
+   console.log("val", state);
+
 	// Define necessary params and scope for the Spotify API
 	const scope = 'user-modify-playback-state user-read-playback-state playlist-modify-public playlist-modify-private';
 	const url = "https://accounts.spotify.com/authorize?";
@@ -111,7 +114,6 @@ router.post("/callback", async (req, res) => {
 	const user = req.body.user;
 	const code = req.body.code || null;
 	const state = req.body.state || null;
-   console.log("this -> ", req.cookies[keys.SPOTIFY_STATE_KEY]);
 	const stored_state = req.cookies ? req.cookies[keys.SPOTIFY_STATE_KEY] : null;
 
    // Reaffirm that the state passed is the
