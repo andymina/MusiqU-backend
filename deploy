@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+function cleanup_at_exit {
+  git checkout master
+  git branch -D deploy
+}
+
+trap cleanup_at_exit EXIT
+git checkout -b deploy
+git add . -f
+git commit --allow-empty -m 'Deploying'
+git push --force https://git.heroku.com/musiqu-backend.git deploy:master
