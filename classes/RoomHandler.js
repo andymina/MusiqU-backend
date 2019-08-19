@@ -4,14 +4,14 @@ class RoomHandler {
 		this.active_rooms = [];
 	}
 
-	isValidCode = (code) => {
+	isValidCode(code){
 		this.active_rooms.forEach((element) => {
 			if (element.room_code == code) return false;
 		});
 		return true;
 	}
 
-	generateRoomCode = () => {
+	generateRoomCode(){
 		const validChars = "ABCDEFGHIJKLMNPQRSTUVWXYZ1234567890";
 		let code;
 
@@ -27,7 +27,7 @@ class RoomHandler {
 		} while (!this.isValidCode(code));
 	};
 
-	getRoom = (code) => {
+	getRoom(code){
 		for (let i = 0; i < this.active_rooms.length; i++)
 			if (this.active_rooms[i].room_code == code)
 				return this.active_rooms[i];
@@ -35,13 +35,13 @@ class RoomHandler {
 		return false;
 	}
 
-	createRoom = () => {
+	createRoom(){
 		const room_code = this.generateRoomCode();
 		this.active_rooms.push(new Room(room_code));
 		return room_code;
 	};
 
-	destroy = (room_code) => {
+	destroy(room_code){
 		let room = this.getRoom(room_code);
 		room.unfollowPlaylist();
 		this.active_rooms = this.active_rooms.filter((element) => element.room_code !== room_code);
