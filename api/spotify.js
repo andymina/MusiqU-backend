@@ -96,7 +96,7 @@ router.post("/connect", (req, res) => {
 		response_type: 'code',
 		client_id: keys.SPOTIFY_CLIENT_ID,
 		scope: scope,
-		redirect_uri: 'http://localhost:3000/spotify',
+		redirect_uri: 'http://musiqu-backend.com/spotify',
 		state: state
 	});
 
