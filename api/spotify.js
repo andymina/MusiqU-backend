@@ -87,7 +87,7 @@ router.post("/connect", (req, res) => {
 	// Generate state and store it to validate
 	// request after Spotify callback
 	const state = generateRandomString(16);
-	res.cookie(keys.SPOTIFY_STATE_KEY, state).send('cookie set');
+	res.cookie(keys.SPOTIFY_STATE_KEY, state);
    console.log("key", keys.SPOTIFY_STATE_KEY);
    console.log("val", state);
 
