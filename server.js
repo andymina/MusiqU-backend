@@ -14,6 +14,7 @@ const roomHandler = new RoomHandler();
 module.exports = roomHandler;
 
 // Middleware
+app.enable('trust proxy');
 app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
