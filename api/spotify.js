@@ -36,7 +36,7 @@ const getTokens = async (code) => {
    const url = "https://accounts.spotify.com/api/token";
    const params = querystring.stringify({
       code: code,
-      redirect_uri: 'http://musiqu-frontend.herokuapp.com/spotify',
+      redirect_uri: keys.SPOTIFY_REDIRECT,
       grant_type: 'authorization_code'
    });
    const header = {
@@ -96,7 +96,7 @@ router.post("/connect", (req, res) => {
 		response_type: 'code',
 		client_id: keys.SPOTIFY_CLIENT_ID,
 		scope: scope,
-		redirect_uri: 'http://musiqu-frontend.herokuapp.com/spotify',
+		redirect_uri: keys.SPOTIFY_REDIRECT,
 		state: state
 	});
 
