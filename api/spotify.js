@@ -84,11 +84,6 @@ const getSpotifyUser = async (access_token) => {
 // Returns a URL to Spotify where the user
 // can login to connect their account
 router.post("/connect", (req, res) => {
-	// Generate state and store it to validate
-	// request after Spotify callback
-	const state = generateRandomString(16);
-	res.cookie(keys.SPOTIFY_STATE_KEY, state);
-
 	// Define necessary params and scope for the Spotify API
 	const scope = 'user-modify-playback-state user-read-playback-state playlist-modify-public playlist-modify-private';
 	const url = "https://accounts.spotify.com/authorize?";
@@ -96,8 +91,7 @@ router.post("/connect", (req, res) => {
 		response_type: 'code',
 		client_id: keys.SPOTIFY_CLIENT_ID,
 		scope: scope,
-		redirect_uri: keys.SPOTIFY_REDIRECT,
-		state: state
+		redirect_uri: keys.SPOTIFY_REDIRECT
 	});
 
 	// Return the url to be redirected to
@@ -110,20 +104,14 @@ router.post("/callback", async (req, res) => {
    // Initialize variables to be used
 	const user = req.body.user;
 	const code = req.body.code || null;
-	const state = req.body.state || null;
-	const stored_state = req.cookies ? req.cookies[keys.SPOTIFY_STATE_KEY] : null;
 
-   // Reaffirm that the state passed is the
-   // same as the state that was stored.
-	if (state === stored_state){
-		res.clearCookie(keys.SPOTIFY_STATE_KEY);
-
+   try {
       let tokens = await getTokens(code);
       let spotify_user = await getSpotifyUser(tokens.spotify_access_token);
       let updated_user = {...user, ...tokens, ...spotify_user};
       return res.status(200).json({ updated_user });
-	} else {
-		return res.status(500).json({ error: "State mismatch" });
+	} catch(err) {
+		return res.status(500).json(err);
 	}
 });
 
