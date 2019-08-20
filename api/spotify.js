@@ -36,7 +36,7 @@ const getTokens = async (code) => {
    const url = "https://accounts.spotify.com/api/token";
    const params = querystring.stringify({
       code: code,
-      redirect_uri: keys.SPOTIFY_REDIRECT,
+      redirect_uri: 'http://localhost:3000/spotify',
       grant_type: 'authorization_code'
    });
    const header = {
@@ -88,11 +88,6 @@ router.post("/connect", (req, res) => {
 	// request after Spotify callback
 	const state = generateRandomString(16);
 	res.cookie(keys.SPOTIFY_STATE_KEY, state);
-   console.log("key", keys.SPOTIFY_STATE_KEY);
-   console.log("val", state);
-
-   console.log(req);
-   console.log("stored -> ", req.cookies[keys.SPOTIFY_STATE_KEY]);
 
 	// Define necessary params and scope for the Spotify API
 	const scope = 'user-modify-playback-state user-read-playback-state playlist-modify-public playlist-modify-private';
@@ -101,7 +96,7 @@ router.post("/connect", (req, res) => {
 		response_type: 'code',
 		client_id: keys.SPOTIFY_CLIENT_ID,
 		scope: scope,
-		redirect_uri: keys.SPOTIFY_REDIRECT,
+		redirect_uri: 'http://localhost:3000/spotify',
 		state: state
 	});
 
@@ -120,11 +115,6 @@ router.post("/callback", async (req, res) => {
 
    // Reaffirm that the state passed is the
    // same as the state that was stored.
-
-   console.log(state)
-   console.log();
-   console.log(stored_state);
-
 	if (state === stored_state){
 		res.clearCookie(keys.SPOTIFY_STATE_KEY);
 
@@ -133,7 +123,6 @@ router.post("/callback", async (req, res) => {
       let updated_user = {...user, ...tokens, ...spotify_user};
       return res.status(200).json({ updated_user });
 	} else {
-      console.log("State mismatch");
 		return res.status(500).json({ error: "State mismatch" });
 	}
 });
