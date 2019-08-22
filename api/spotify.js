@@ -112,8 +112,6 @@ router.post("/callback", async (req, res) => {
 	const code = req.body.code || null;
    const state = req.body.state || null;
 	const stored_state = req.cookies ? req.cookies[keys.SPOTIFY_STATE_KEY] : null;
-   console.log("state ->", state);
-   console.log("stored state -> ", stored_state);
 
    // Reaffirm that the state passed is the
    // same as the state that was stored.
