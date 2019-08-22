@@ -68,9 +68,17 @@ class Room {
 			user.spotify_access_token = data.access_token;
 
 			if (this.current_users.length == 0) await this.initMaster(user);
-			this.current_users.push(user);
 
-			return true;
+			// follow the playlist
+			try {
+				const second_url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/followers`;
+				await axios.put(url, header);
+				this.current_users.push(user);
+				return true;
+			} catch (err) {
+				console.log(err);
+				return false;
+			}
 		} catch(err) {
 			console.log(err);
 			return false;

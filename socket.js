@@ -8,7 +8,7 @@ module.exports = (io) => {
 		socket.on('join-room', async (user, room_code) => {
 			let room = roomHandler.getRoom(room_code);
 
-			if (room == false){
+			if (room === false){
 				// error handling
 				console.log(`Room ${room_code} DNE`);
 				socket.emit('join-error');
