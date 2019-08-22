@@ -47,15 +47,14 @@ module.exports = (io) => {
 
 		socket.on('play', async () => {
 			let room = roomHandler.getRoom(socket.room_code);
-			let res = await room.play();
-
-			if (res) io.in(socket.room_code).emit('update-room', room);
-			else socket.emit('play-error');
+			await room.play();
+			io.in(socket.room_code).emit('update-room', room);
 		});
 
 		socket.on('pause', async () => {
 			let room = roomHandler.getRoom(socket.room_code);
 			await room.pause();
+			console.log(room.is_playing);
 			io.in(socket.room_code).emit('update-status', room.is_playing);
 		});
 
@@ -65,8 +64,9 @@ module.exports = (io) => {
 			io.in(socket.room_code).emit('update-status', room.is_playing);
 		})
 
-		socket.on('request-update', () => {
+		socket.on('request-song-update', () => {
 			let room = roomHandler.getRoom(socket.room_code);
+			room.song = room.dequeue();
 			io.in(socket.room_code).emit('update-room', room);
 		});
 
