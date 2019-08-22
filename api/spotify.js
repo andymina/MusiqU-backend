@@ -118,12 +118,13 @@ router.post("/callback", async (req, res) => {
    // Reaffirm that the state passed is the
    // same as the state that was stored.
 	if (state === stored_state){
-		res.clearCookie(keys.SPOTIFY_STATE_KEY);
       let tokens = await getTokens(code);
       let spotify_user = await getSpotifyUser(tokens.spotify_access_token);
       let updated_user = {...user, ...tokens, ...spotify_user};
+      res.clearCookie(keys.SPOTIFY_STATE_KEY);
       return res.status(200).json({ updated_user });
 	} else {
+      res.clearCookie(keys.SPOTIFY_STATE_KEY);
 		return res.status(500).json("State mismatch");
 	}
 });
