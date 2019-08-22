@@ -48,9 +48,7 @@ module.exports = (io) => {
 		socket.on('play', async () => {
 			let room = roomHandler.getRoom(socket.room_code);
 			await room.play();
-			io.in(socket.room_code).emit('update-song', room.song);
-			io.in(socket.room_code).emit('update-queue', room.queue);
-			io.in(socket.room_code).emit('update-status', room.is_playing);
+			io.in(socket.room_code).emit('update-room', room);
 		});
 
 		socket.on('pause', async () => {
@@ -68,15 +66,8 @@ module.exports = (io) => {
 
 		socket.on('request-song-update', () => {
 			let room = roomHandler.getRoom(socket.room_code);
-
-			if (room.queue.length !== 0){
-				room.song = room.dequeue();
-			} else {
-				room.song = {};
-			}
-
-			io.in(socket.room_code).emit('update-song', room.song);
-			io.in(socket.room_code).emit('update-queue', room.queue);
+			room.song = room.dequeue();
+			io.in(socket.room_code).emit('update-room', room);
 		});
 
 		socket.on('disconnect', () => {
@@ -87,7 +78,7 @@ module.exports = (io) => {
 				socket.leave(socket.room_code);
 
 				console.log(`${socket.user.username} has left room ${socket.room_code}`)
-				socket.to(socket.room_code).emit('room-update');
+				socket.to(socket.room_code).emit('update-room');
 
 				console.log(`Destroy room ${socket.room_code}`);
 				if (room.current_users.length == 0) roomHandler.destroy(socket.room_code);
