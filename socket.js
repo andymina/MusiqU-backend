@@ -50,13 +50,12 @@ module.exports = (io) => {
 			let res = await room.play();
 
 			if (res) io.in(socket.room_code).emit('update-room', room);
-			else socket.emit('play-error')
+			else socket.emit('play-error');
 		});
 
 		socket.on('pause', async () => {
 			let room = roomHandler.getRoom(socket.room_code);
 			await room.pause();
-			console.log(room.is_playing);
 			io.in(socket.room_code).emit('update-status', room.is_playing);
 		});
 
