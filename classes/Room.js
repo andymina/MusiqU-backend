@@ -94,7 +94,7 @@ class Room {
 		};
 
 		try {
-			await axios.post(url + params, header);
+			await axios.post(url + params, {}, header);
 			this.queue.push(song);
 		} catch(err) {
 			console.log(err);
