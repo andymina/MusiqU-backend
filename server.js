@@ -16,7 +16,7 @@ module.exports = roomHandler;
 // Middleware
 app.use(cors({
   credentials: true,
-  origin: "https://musiqu-frontend.herokuapp.com"
+  origin: "http://musiqu-frontend.herokuapp.com"
 }));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
