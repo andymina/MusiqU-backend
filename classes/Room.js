@@ -44,20 +44,6 @@ class Room {
 		});
 	}
 
-	followPlaylist(user){
-		const url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/followers`;
-		const header = {
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + user.spotify_access_token
-			}
-		};
-
-		axios.put(url, {}, header).catch(err => {
-			console.log(err);
-		});
-	}
-
 	// Handle user join
 	async join(user){
 		// Return false if the room is full
@@ -82,7 +68,6 @@ class Room {
 			user.spotify_access_token = data.access_token;
 
 			if (this.current_users.length == 0) await this.initMaster(user);
-			else await this.followPlaylist(user);
 			this.current_users.push(user);
 			return true;
 		} catch(err) {
@@ -103,7 +88,7 @@ class Room {
 		const params = querystring.stringify({ uris: song.uri });
 		const header = {
 			headers: {
-				'Authorization': 'Bearer ' + user.spotify_access_token
+				'Authorization': 'Bearer ' + this.master.spotify_access_token
 			}
 		};
 
@@ -179,11 +164,11 @@ class Room {
 		}
 	}
 
-	unfollowPlaylist(user){
+	unfollowPlaylist(){
 		const url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/followers`;
 		const header = {
 			headers: {
-				'Authorization': 'Bearer ' + user.spotify_access_token
+				'Authorization': 'Bearer ' + this.playlist.owner.spotify_access_token
 			}
 		};
 

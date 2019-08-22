@@ -81,7 +81,6 @@ module.exports = (io) => {
 
 		socket.on('disconnect', () => {
 			let room = roomHandler.getRoom(socket.room_code);
-			room.unfollowPlaylist(socket.user);
 
 			if (room !== false){
 				room.leave(socket.user);
