@@ -86,18 +86,15 @@ class Room {
 	// Handle enqueue
 	async enqueue(user, song){
 		const url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/tracks`;
-		const params = {
-			uris: [song.uri]
-		};
+		const params = querystring.stringify({ uris: song.uri });
 		const header = {
 			headers: {
-				'Content-Type': 'application/json',
 				'Authorization': 'Bearer ' + user.spotify_access_token
 			}
 		};
 
 		try {
-			await axios.post(url, params, header);
+			await axios.post(url + params, header);
 			this.queue.push(song);
 		} catch(err) {
 			console.log(err);
