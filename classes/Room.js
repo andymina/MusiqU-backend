@@ -44,6 +44,20 @@ class Room {
 		});
 	}
 
+	followPlaylist(user){
+		const url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/followers`;
+		const header = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + user.spotify_access_token
+			}
+		};
+
+		axios.put(url, {}, header).catch(err => {
+			console.log(err);
+		});
+	}
+
 	// Handle user join
 	async join(user){
 		// Return false if the room is full
@@ -68,23 +82,9 @@ class Room {
 			user.spotify_access_token = data.access_token;
 
 			if (this.current_users.length == 0) await this.initMaster(user);
-
-			// follow the playlist
-			try {
-				const second_url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/followers`;
-				const header = {
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': 'Bearer ' + user.spotify_access_token
-					}
-				};
-				await axios.put(url, {}, header);
-				this.current_users.push(user);
-				return true;
-			} catch (err) {
-				console.log(err);
-				return false;
-			}
+			else await this.followPlaylist(user);
+			this.current_users.push(user);
+			return true;
 		} catch(err) {
 			console.log(err);
 			return false;
@@ -179,11 +179,11 @@ class Room {
 		}
 	}
 
-	unfollowPlaylist(){
+	unfollowPlaylist(user){
 		const url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/followers`;
 		const header = {
 			headers: {
-				'Authorization': 'Bearer ' + this.playlist.owner.spotify_access_token
+				'Authorization': 'Bearer ' + user.spotify_access_token
 			}
 		};
 
