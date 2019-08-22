@@ -85,7 +85,7 @@ class Room {
 
 	// Handle enqueue
 	async enqueue(user, song){
-		const url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/tracks`;
+		const url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/tracks?`;
 		const params = querystring.stringify({ uris: song.uri });
 		const header = {
 			headers: {
