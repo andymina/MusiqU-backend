@@ -50,6 +50,7 @@ module.exports = (io) => {
 			await room.play();
 			io.in(socket.room_code).emit('update-song', room.song);
 			io.in(socket.room_code).emit('update-queue', room.queue);
+			io.in(socket.room_code).emit('update-status', room.is_playing);
 		});
 
 		socket.on('pause', async () => {
@@ -67,6 +68,7 @@ module.exports = (io) => {
 
 		socket.on('request-song-update', () => {
 			let room = roomHandler.getRoom(socket.room_code);
+			room.song = room.dequeue();
 			io.in(socket.room_code).emit('update-song', room.song);
 			io.in(socket.room_code).emit('update-queue', room.queue);
 		});
