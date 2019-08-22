@@ -72,7 +72,13 @@ class Room {
 			// follow the playlist
 			try {
 				const second_url = `https://api.spotify.com/v1/playlists/${this.playlist.id}/followers`;
-				await axios.put(url, header);
+				const header = {
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': 'Bearer ' + user.spotify_access_token
+					}
+				};
+				await axios.put(url, {}, header);
 				this.current_users.push(user);
 				return true;
 			} catch (err) {
