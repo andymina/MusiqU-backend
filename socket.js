@@ -66,9 +66,8 @@ module.exports = (io) => {
 			io.in(socket.room_code).emit('update-status', room.is_playing);
 		})
 
-		socket.on('request-song-update', () => {
+		socket.on('request-update', () => {
 			let room = roomHandler.getRoom(socket.room_code);
-			room.song = room.dequeue();
 			io.in(socket.room_code).emit('update-room', room);
 		});
 
