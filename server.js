@@ -1,6 +1,7 @@
 // Package imports
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const passport = require('passport');
@@ -13,7 +14,10 @@ const roomHandler = new RoomHandler();
 module.exports = roomHandler;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  credentials: true,
+}));
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
