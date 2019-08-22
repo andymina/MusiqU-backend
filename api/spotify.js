@@ -96,6 +96,7 @@ router.post("/connect", (req, res) => {
 		response_type: 'code',
 		client_id: keys.SPOTIFY_CLIENT_ID,
 		scope: scope,
+      state: state,
 		redirect_uri: keys.SPOTIFY_REDIRECT
 	});
 
